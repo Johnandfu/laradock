@@ -1,0 +1,22 @@
+{
+    "files.associations": {
+        ".env.example": "dotenv",
+        "Dockerfile-*": "dockerfile"
+    },
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 3303,
+            "driver": "MariaDB",
+            "name": "mariadb",
+            "group": "1",
+            "username": "root",
+            "password": "roofu",
+            "database": "mysql"
+        }
+    ]
+}
