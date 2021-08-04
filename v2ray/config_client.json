@@ -49,11 +49,11 @@
       "settings": {
         "vnext": [
           {
-            "address": "",
+            "address": "108.61.213.96",
             "port": 9000,
             "users": [
               {
-                "id": "1b831381d-6324-4d53-ad4f-8cda48b30811",
+                "id": "b831381d-6324-4d53-ad4f-8cda48b30811",
                 "alterId": 64
               }
             ]

@@ -1064,16 +1064,16 @@ services:
         - ELK_VERSION=${ELK_VERSION}
     volumes:
       - ${DATA_PATH_HOST}/elasticsearch:/usr/share/elasticsearch/data
-      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      - ./elasticsearch/config/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
+     # - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+     # - ./elasticsearch/config/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
     environment:
       - cluster.name=laradock-cluster
       - node.name=laradock-node
       - node.master=true
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      #- cluster.initial_master_nodes=laradock-node
-      - discovery.seed_hosts=elasticsearch-3,elasticsearch-2
+      - cluster.initial_master_nodes=laradock-node
+      #- discovery.seed_hosts=elasticsearch-3,elasticsearch-2
       #- discovery.zen.ping.unicast.hosts=elasticsearch-3,elasticsearch-2
     ulimits:
       memlock:
@@ -1104,7 +1104,7 @@ services:
       - cluster.name=laradock-cluster
       - node.name=laradock-node2
       - node.master=true
-      - bootstrap.memory_lock=true
+      - bootstrap.memory_lock=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       #- cluster.initial_master_nodes=laradock-node2
       - discovery.seed_hosts=elasticsearch,elasticsearch-3
@@ -1138,7 +1138,7 @@ services:
       - cluster.name=laradock-cluster
       - node.name=laradock-node3
       - node.master=true
-      - bootstrap.memory_lock=true
+      - bootstrap.memory_lock=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       #- cluster.initial_master_nodes=laradock-node3
       - discovery.seed_hosts=elasticsearch,elasticsearch-2
@@ -2449,3 +2449,15 @@ services:
       - frontend
       - backend
     restart: always        
+
+### go ################################################
+  java:
+    build:
+      context: ./java
+    volumes:
+      - ${APP_CODE_PATH_HOST}/spring-mall:/home/www/spring-mall
+    ports:
+      - "8011:8011"
+    networks:
+      - backend
+    tty: true    
