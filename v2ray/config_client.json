@@ -50,7 +50,7 @@
       "settings": {
         "vnext": [
           {
-            "address": "45.32.190.54",
+            "address": "",
             "port": 9000,
             "users": [
               {
