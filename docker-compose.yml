@@ -2207,7 +2207,7 @@ services:
     build:
       context: ./kafka
     environment:
-      KAFKA_ADVERTISED_HOST_NAME: kafka
+      LISTENERS: PLAINTEXT://kafka-kraft:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_HEAP_OPTS: -Xmx2G -Xms2G
     volumes:
@@ -2219,23 +2219,6 @@ services:
     networks:
       - backend
     tty: true
-  ### kafka ################################################
-  kafka-2:
-    build:
-      context: ./kafka
-    environment:
-      - KAFKA_ADVERTISED_HOST_NAME=localhost
-      - KAFKA_CREATE_TOPICS=docker:1:1
-      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_HEAP_OPTS=-Xmx2G -Xms2G
-    volumes:
-      - ${DATA_PATH_HOST}/kafka:/opt/kafka/config
-    ports:
-      - "9093:9092"
-    depends_on:
-      - zookeeper
-    networks:
-      - backend
   ### kafka-manager ################################################
   kafka-manager:
     build:
@@ -2415,6 +2398,7 @@ services:
       context: ./v2ray
     ports:
       - "10807:1080"
+      - "10810:8080"
       - "10808:1081"
     environment:
       - METHOD=aes-256-cfb
@@ -2461,3 +2445,17 @@ services:
     networks:
       - backend
     tty: true    
+
+
+### kafka ################################################
+  kafka-kraft:
+    build:
+      context: ./kafka-kraft
+    volumes:
+      - ${DATA_PATH_HOST}/kafka-kraft:/data
+    ports:
+      - "9012:9092"
+    networks:
+      - backend
+      - frontend
+    tty: true       

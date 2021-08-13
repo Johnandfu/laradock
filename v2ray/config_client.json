@@ -32,7 +32,8 @@
     {
       "port": 8080,
       "listen": "0.0.0.0",
-      "protocol": "http",
+      "tag":"cm",
+      "protocol": "socks",
       "sniffing": {
         "enabled": true,
         "destOverride": ["http", "tls"]
@@ -49,7 +50,7 @@
       "settings": {
         "vnext": [
           {
-            "address": "45.32.190.54",
+            "address": "",
             "port": 9000,
             "users": [
               {
