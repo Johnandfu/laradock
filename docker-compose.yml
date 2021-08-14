@@ -2432,6 +2432,8 @@ services:
     networks:
       - frontend
       - backend
+    extra_hosts:
+      - "dockerhost:${DOCKER_HOST_IP}"  
     restart: always        
 
 ### go ################################################
