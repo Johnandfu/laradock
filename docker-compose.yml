@@ -2444,6 +2444,7 @@ services:
       - "8011:8011"
     networks:
       - backend
+      - frontend
     tty: true    
 
 
@@ -2459,3 +2460,17 @@ services:
       - backend
       - frontend
     tty: true       
+
+### kafka ################################################
+  pulsar:
+    build:
+      context: ./pulsar
+    volumes:
+      - ${DATA_PATH_HOST}/pulsar:/data
+    ports:
+      - "8199:8080"
+      - "6650:6650"
+    networks:
+      - backend
+      - frontend
+    tty: true           
