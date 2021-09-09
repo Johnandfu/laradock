@@ -2472,4 +2472,31 @@ services:
     networks:
       - backend
       - frontend
-    tty: true           
+    tty: true 
+### kafka ################################################
+  pulsar-manager:
+    image: apachepulsar/pulsar-manager:v0.2.0
+    ports:
+      - "9527:9527"
+      - "7750:7750"
+    depends_on:
+      - pulsar
+    links:
+      - pulsar
+    environment:
+      SPRING_CONFIGURATION_FILE: /pulsar-manager/pulsar-manager/application.properties
+    networks:
+      - backend
+      - frontend
+  ### kafka ################################################
+  kafka-eagle:
+    build:
+      context: ./kafka-eagle
+    ports:
+      - "8048:8048"
+    environment:
+      ZKSERVER: "zookeeper:2181"
+    networks:
+      - backend
+      - frontend
+

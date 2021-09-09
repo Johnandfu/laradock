@@ -1,4 +1,4 @@
-FROM openjdk:8u212-alpine
+FROM openjdk:8-alpine
 #FROM alpine:latest
 
 # Rocketmq version
@@ -11,9 +11,9 @@ WORKDIR  ${ROCKETMQ_HOME}
 
 # Install
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
-    && apk add --no-cache bash gettext curl  nmap-ncat openssl busybox-extras \
+    && apk add --no-cache bash gettext curl  openjdk8-jre nmap-ncat openssl busybox-extras \
     && apk add --virtual .build-deps curl gnupg unzip \
-    && curl -L http://mirrors.aliyun.com/apache/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o rocketmq.zip \
+    && curl -L https://mirrors.aliyun.com/apache/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o rocketmq.zip \
     #https://www.apache.org/dist/rocketmq/KEYS
     && unzip rocketmq.zip \
 	&& mv rocketmq-all*/* . \
@@ -52,4 +52,4 @@ RUN sed -i 's/${JAVA_HOME}\/jre\/lib\/ext/${JAVA_HOME}\/jre\/lib\/ext:${JAVA_HOM
 WORKDIR ${ROCKETMQ_HOME}/bin
 
 #ENTRYPOINT  ["mqbroker", "-c", "/etc/rocketmq/broker.conf"]
-CMD  ["bash","./start.sh"]
+ENTRYPOINT  ["./start.sh"]
