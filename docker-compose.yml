@@ -1063,13 +1063,12 @@ services:
       args:
         - ELK_VERSION=${ELK_VERSION}
     volumes:
-      - ${DATA_PATH_HOST}/elasticsearch:/usr/share/elasticsearch/data
+      - ${DATA_PATH_HOST}/elasticsearch222:/usr/share/elasticsearch/data
      # - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
      # - ./elasticsearch/config/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
     environment:
       - cluster.name=laradock-cluster
       - node.name=laradock-node
-      - node.master=true
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - cluster.initial_master_nodes=laradock-node
@@ -1085,8 +1084,6 @@ services:
     ports:
       - "9200:9200"
       - "9300:9300"
-    depends_on:
-      - php-fpm
     networks:
       - frontend
       - backend
