@@ -10,5 +10,5 @@ RUN apk update \
 USER root
 WORKDIR /opt/kafka
 COPY config/server.properties /opt/kafka/config/server.properties
-COPY start_kafka.sh ./
-ENTRYPOINT ["./start_kafka.sh"]
+COPY start_kafka.sh /bin/
+CMD ["/bin/start_kafka.sh"]
