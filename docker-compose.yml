@@ -74,7 +74,7 @@ volumes:
   tidb:
     driver: ${VOLUMES_DRIVER}
   tidbc:
-    driver: ${VOLUMES_DRIVER}  
+    driver: ${VOLUMES_DRIVER}
 
 services:
   ### Workspace Utilities ##################################
@@ -1064,8 +1064,8 @@ services:
         - ELK_VERSION=${ELK_VERSION}
     volumes:
       - ${DATA_PATH_HOST}/elasticsearch:/usr/share/elasticsearch/data
-     # - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-     # - ./elasticsearch/config/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
+      # - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      # - ./elasticsearch/config/log4j2.properties:/usr/share/elasticsearch/config/log4j2.properties
     environment:
       - cluster.name=laradock-cluster
       - node.name=laradock-node
@@ -2407,7 +2407,7 @@ services:
       - frontend
       - backend
     restart: always
- ### MOSQUITTO Broker #########################################
+  ### MOSQUITTO Broker #########################################
   tidb:
     build:
       context: ./tidb
@@ -2419,8 +2419,8 @@ services:
     networks:
       - frontend
       - backend
-    restart: always    
-### MOSQUITTO Broker #########################################
+    restart: always
+  ### MOSQUITTO Broker #########################################
   tidbc:
     build:
       context: ./tidbc
@@ -2433,10 +2433,10 @@ services:
       - frontend
       - backend
     extra_hosts:
-      - "dockerhost:${DOCKER_HOST_IP}"  
-    restart: always        
+      - "dockerhost:${DOCKER_HOST_IP}"
+    restart: always
 
-### go ################################################
+  ### go ################################################
   java:
     build:
       context: ./java
@@ -2447,10 +2447,9 @@ services:
     networks:
       - backend
       - frontend
-    tty: true    
+    tty: true
 
-
-### kafka ################################################
+  ### kafka ################################################
   kafka-kraft:
     build:
       context: ./kafka-kraft
@@ -2461,9 +2460,9 @@ services:
     networks:
       - backend
       - frontend
-    tty: true       
+    tty: true
 
-### kafka ################################################
+  ### kafka ################################################
   pulsar:
     build:
       context: ./pulsar
@@ -2475,19 +2474,14 @@ services:
     networks:
       - backend
       - frontend
-    tty: true 
-### kafka ################################################
+    tty: true
+  ### kafka ################################################
   pulsar-manager:
-    image: apachepulsar/pulsar-manager:v0.2.0
+    build:
+      context: ./pulsar-manager
     ports:
-      - "9527:9527"
+      - "9529:9527"
       - "7750:7750"
-    depends_on:
-      - pulsar
-    links:
-      - pulsar
-    environment:
-      SPRING_CONFIGURATION_FILE: /pulsar-manager/pulsar-manager/application.properties
     networks:
       - backend
       - frontend
@@ -2502,4 +2496,4 @@ services:
     networks:
       - backend
       - frontend
-
+    tty: true
