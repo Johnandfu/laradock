@@ -1069,9 +1069,9 @@ services:
     environment:
       - cluster.name=laradock-cluster
       - node.name=laradock-node
-      - bootstrap.memory_lock=true
+      - bootstrap.memory_lock=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - cluster.initial_master_nodes=laradock-node
+      - "discovery.type=single-node"
       #- discovery.seed_hosts=elasticsearch-3,elasticsearch-2
       #- discovery.zen.ping.unicast.hosts=elasticsearch-3,elasticsearch-2
     ulimits:
@@ -2204,17 +2204,20 @@ services:
     build:
       context: ./kafka
     environment:
-      LISTENERS: PLAINTEXT://kafka-kraft:9092
+      LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_HEAP_OPTS: -Xmx2G -Xms2G
+      KAFKA_JMX_OPTS: -Djava.rmi.server.hostname=kafka -Dcom.sun.management.jmxremote.host=0.0.0.0 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false
+      KAFKA_HEAP_OPTS: -server -Xms2G -Xmx2G -XX:PermSize=128m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=8 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70
     volumes:
       - ${DATA_PATH_HOST}/kafka:/data
     ports:
       - "9092:9092"
+      - "9988:9988"
     depends_on:
       - zookeeper
     networks:
       - backend
+      - frontend
     tty: true
   ### kafka-manager ################################################
   kafka-manager:
@@ -2404,6 +2407,7 @@ services:
       - frontend
       - backend
     restart: always
+    tty: true
   ### MOSQUITTO Broker #########################################
   tidb:
     build:
@@ -2416,7 +2420,6 @@ services:
     networks:
       - frontend
       - backend
-    restart: always
   ### MOSQUITTO Broker #########################################
   tidbc:
     build:
@@ -2431,7 +2434,6 @@ services:
       - backend
     extra_hosts:
       - "dockerhost:${DOCKER_HOST_IP}"
-    restart: always
 
   ### go ################################################
   java:
@@ -2479,6 +2481,8 @@ services:
     ports:
       - "9529:9527"
       - "7750:7750"
+    environment: 
+      - SPRING_CONFIGURATION_FILE=/pulsar-manager/pulsar-manager/application.properties
     networks:
       - backend
       - frontend
@@ -2486,6 +2490,7 @@ services:
   kafka-eagle:
     build:
       context: ./kafka-eagle
+    privileged: true  
     ports:
       - "8048:8048"
     environment:
