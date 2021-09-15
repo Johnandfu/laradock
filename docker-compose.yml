@@ -2150,8 +2150,6 @@ services:
     ports:
       - "9099:9099"
       - "7000:3000"
-    depends_on:
-      - workspace
     networks:
       - backend
     tty: true
