@@ -10,7 +10,10 @@
       "listen": "0.0.0.0",
       "sniffing": {
         "enabled": true,
-        "destOverride": ["http", "tls"]
+        "destOverride": [
+          "http",
+          "tls"
+        ]
       },
       "settings": {
         "udp": true
@@ -23,7 +26,10 @@
       "listen": "0.0.0.0",
       "sniffing": {
         "enabled": true,
-        "destOverride": ["http", "tls"]
+        "destOverride": [
+          "http",
+          "tls"
+        ]
       },
       "settings": {
         "udp": true
@@ -32,11 +38,14 @@
     {
       "port": 8080,
       "listen": "0.0.0.0",
-      "tag":"cm",
+      "tag": "cm",
       "protocol": "socks",
       "sniffing": {
         "enabled": true,
-        "destOverride": ["http", "tls"]
+        "destOverride": [
+          "http",
+          "tls"
+        ]
       }
     }
   ],
@@ -79,8 +88,12 @@
         "type": "field",
         "outboundTag": "proxy",
         "sourcePort": 1081,
-        "inboundTag": ["all"],
-        "domain": ["*"]
+        "inboundTag": [
+          "all"
+        ],
+        "domain": [
+          "*"
+        ]
       },
       {
         "domain": [
@@ -93,12 +106,17 @@
         ],
         "type": "field",
         "outboundTag": "adblock",
-        "inboundTag": ["cm", "all"]
+        "inboundTag": [
+          "cm",
+          "all"
+        ]
       },
       {
         "type": "field",
         "outboundTag": "proxy",
-        "inboundTag": ["cm"],
+        "inboundTag": [
+          "cm"
+        ],
         "domain": [
           "geosite:gfw",
           "geosite:greatfire",
@@ -109,7 +127,9 @@
       },
       {
         "type": "field",
-        "inboundTag": ["cm"],
+        "inboundTag": [
+          "cm"
+        ],
         "outboundTag": "direct"
       }
     ]
