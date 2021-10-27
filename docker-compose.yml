@@ -2497,3 +2497,20 @@ services:
       - backend
       - frontend
     tty: true
+
+### MOSQUITTO Broker #########################################
+  v2ray-tls:
+    build:
+      context: ./v2ray-tls
+    ports:
+      - "10811:1080"
+      - "10812:8080"
+      - "10813:1081"
+    environment:
+      - METHOD=aes-256-cfb
+      - PASSWORD=shapixiaolaodi
+    networks:
+      - frontend
+      - backend
+    restart: always
+    tty: true    

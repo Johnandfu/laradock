@@ -1,0 +1,137 @@
+{
+  "log": {
+    "loglevel": "error"
+  },
+  "inbounds": [
+    {
+      "port": 1080,
+      "tag": "cm",
+      "protocol": "http",
+      "listen": "0.0.0.0",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      },
+      "settings": {
+        "udp": true
+      }
+    },
+    {
+      "port": 1081,
+      "protocol": "socks",
+      "tag": "all",
+      "listen": "0.0.0.0",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      },
+      "settings": {
+        "udp": true
+      }
+    },
+    {
+      "port": 8080,
+      "listen": "0.0.0.0",
+      "tag": "cm",
+      "protocol": "socks",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "tag": "proxy",
+      "protocol": "vmess",
+      "mux": {
+        "enabled": true
+      },
+      "settings": {
+        "vnext": [
+          {
+            "address": "45.76.49.23",
+            "port": 9000,
+            "users": [
+              {
+                "id": "b831381d-6324-4d53-ad4f-8cda48b30811",
+                "alterId": 64
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "tag": "direct",
+      "settings": {},
+      "protocol": "freedom"
+    },
+    {
+      "protocol": "blackhole",
+      "settings": {},
+      "tag": "adblock"
+    }
+  ],
+  "routing": {
+    "rules": [
+      {
+        "type": "field",
+        "outboundTag": "proxy",
+        "sourcePort": 1081,
+        "inboundTag": [
+          "all"
+        ],
+        "domain": [
+          "*"
+        ]
+      },
+      {
+        "domain": [
+          "tanx.com",
+          "googeadsserving.cn",
+          "geosite:category-ads-all",
+          "geosite:category-porn",
+          "geosite:youku-ads",
+          "geosite:adblock"
+        ],
+        "type": "field",
+        "outboundTag": "adblock",
+        "inboundTag": [
+          "cm",
+          "all"
+        ]
+      },
+      {
+        "type": "field",
+        "outboundTag": "proxy",
+        "inboundTag": [
+          "cm"
+        ],
+        "domain": [
+          "geosite:gfw",
+          "geosite:greatfire",
+          "github.com",
+          "githubassets.com",
+          "githubusercontent.com"
+        ]
+      },
+      {
+        "type": "field",
+        "inboundTag": [
+          "cm"
+        ],
+        "outboundTag": "direct"
+      }
+    ]
+  }
+}
