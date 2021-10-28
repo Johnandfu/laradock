@@ -36,7 +36,7 @@
   ],
   "outbounds": [
     {
-      "protocol": "vless",
+      "protocol": "vmess",
       "tag": "proxy",
       "settings": {
           "vnext": [
@@ -56,9 +56,10 @@
       "streamSettings": {
           "network": "tcp",
           "security": "tls",
+          "allowInsecure":true,
           "tlsSettings": {
-              "serverName": "45.32.28.17",
-              "allowInsecure":true
+              "serverName": "45.32.28.17"
+             
           }
       }
   },
