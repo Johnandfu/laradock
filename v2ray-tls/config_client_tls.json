@@ -36,7 +36,7 @@
   ],
   "outbounds": [
     {
-      "protocol": "vmess",
+      "protocol": "vless",
       "tag": "proxy",
       "settings": {
           "vnext": [
@@ -45,8 +45,7 @@
                   "port": 443,
                   "users": [
                       {
-                          "id": "b831381d-6324-4d53-ad4f-8cda48b30811",
-                          "encryption": "none",
+                          "id": "b831381d-6324-4d53-ad4f-8cda48b30811",                        
                           "level": 0
                       }
                   ]
@@ -58,7 +57,8 @@
           "security": "tls",
           "allowInsecure":true,
           "tlsSettings": {
-              "serverName": "45.32.28.17"
+              "serverName": "www.test.com",
+              "allowInsecure":true
              
           }
       }
