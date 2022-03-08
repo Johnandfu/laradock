@@ -9,7 +9,7 @@ COPY redis.conf /usr/local/etc/redis/redis.conf
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 VOLUME /data
-
+USER root
 EXPOSE 6379 16379
 
 

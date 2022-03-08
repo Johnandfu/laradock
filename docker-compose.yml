@@ -2251,7 +2251,7 @@ services:
     build:
       context: ./php-alpine
     volumes:
-      - ${APP_CODE_PATH_HOST}/tp:/var/www/tp
+      - ${APP_CODE_PATH_HOST}/:/var/www/
     ports:
       # - "9999:9000"
       - "9998:9998"
@@ -2415,6 +2415,8 @@ services:
     environment:
       - METHOD=aes-256-cfb
       - PASSWORD=shapixiaolaodi
+    volumes:
+      - ${DATA_PATH_HOST}/tidb:/tmp/tidb  
     networks:
       - frontend
       - backend
