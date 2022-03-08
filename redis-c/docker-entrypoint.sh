@@ -1,4 +1,5 @@
 #!/bin/sh
+envsubst < /usr/local/etc/redis/redis-cluster.tmpl >/usr/local/etc/redis/redis.conf
 eval redis-server /usr/local/etc/redis/redis.conf
 
 if [ -n "$REDIS_NODES" ]; then
