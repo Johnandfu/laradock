@@ -2515,4 +2515,65 @@ services:
       - frontend
       - backend
     restart: always
+    tty: true  
+### tiup #########################################
+  tiup:
+    build:
+      context: ./tiup
+    ports:
+      - "10900:9090"
+      - "10000:3000"
+      - "10930:9093"
+      - "10940:9094"
+    depends_on:  
+      - tinode-1
+      - tinode-2
+      - tinode-3
+    environment:
+      - METHOD=aes-256-cfb
+      - PASSWORD=shapixiaolaodi
+    networks:
+      - frontend
+      - backend
+    restart: always
     tty: true    
+### tiup #########################################
+  tinode-1:
+    build:
+      context: ./tinode
+    environment:
+      - METHOD=aes-256-cfb
+      - PASSWORD=shapixiaolaodi
+    networks:
+      - frontend
+      - backend
+    restart: always
+    tty: true    
+### tiup #########################################
+  tinode-2:
+    build:
+      context: ./tinode
+    environment:
+      - METHOD=aes-256-cfb
+      - PASSWORD=shapixiaolaodi
+    networks:
+      - frontend
+      - backend
+    restart: always
+    tty: true    
+### tiup #########################################
+  tinode-3:
+    build:
+      context: ./tinode
+    environment:
+      - METHOD=aes-256-cfb
+      - PASSWORD=shapixiaolaodi
+    networks:
+      - frontend
+      - backend
+    restart: always
+    tty: true    
+
+
+
+
