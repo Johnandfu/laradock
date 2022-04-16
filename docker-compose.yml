@@ -2573,6 +2573,23 @@ services:
       - backend
     restart: always
     tty: true    
+### tiup #########################################
+  predixy:
+    build:
+      context: ./predixy
+      args:
+        - VERSION=1.0.5
+    environment:
+      - METHOD=aes-256-cfb
+      - PASSWORD=shapixiaolaodi
+    networks:
+      - frontend
+      - backend
+    ports: 
+      - "7617:7617"  
+    restart: always
+    tty: true      
+
 
 
 
