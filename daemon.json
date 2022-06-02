@@ -1,0 +1,19 @@
+{
+    "registry-mirrors": [
+        "https://registry.docker-cn.com",
+        "https://docker.mirrors.ustc.edu.cn",
+        "http://hub-mirror.c.163.com",
+        "https://cr.console.aliyun.com/"
+    ],
+    "default-ulimits": {
+        "nofile": {
+            "Name": "nofile",
+            "Hard": 64000,
+            "Soft": 64000
+        }
+    },
+    "log-opts":{
+        "max-file":"3",
+        "max-size":"1m"
+    }
+}

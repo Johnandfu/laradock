@@ -783,7 +783,7 @@ services:
   redis:
     build: ./redis
     volumes:
-      - ${DATA_PATH_HOST}/redis:/data
+      - ${DATA_PATH_HOST}/redis:/data/redis
     ports:
       - "${REDIS_PORT}:6379"
     networks:
@@ -794,6 +794,8 @@ services:
     build: ./redis-cluster
     ports:
       - "${REDIS_CLUSTER_PORT_RANGE}:7000-7005"
+    volumes:
+      - ${DATA_PATH_HOST}/redis-cluster:/data  
     networks:
       - backend
 
@@ -2411,7 +2413,7 @@ services:
     build:
       context: ./tidb
     ports:
-      - "4000:4000"
+      - "4001:4000"
     environment:
       - METHOD=aes-256-cfb
       - PASSWORD=shapixiaolaodi
@@ -2425,15 +2427,14 @@ services:
     build:
       context: ./tidbc
     ports:
-      - "4001:4000"
+      - "4002:4000"
     environment:
       - METHOD=aes-256-cfb
       - PASSWORD=shapixiaolaodi
     networks:
       - frontend
       - backend
-    extra_hosts:
-      - "dockerhost:${DOCKER_HOST_IP}"
+    tty: true  
 
   ### go ################################################
   java:
