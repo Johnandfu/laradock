@@ -6,7 +6,8 @@ ENV BUILD_DEPS="gettext"  \
 
 ## For security settings uncomment, make the dir, copy conf, and also start with the conf, to use it
 RUN  mkdir -p /usr/local/etc/redis
-RUN  apk add bash && \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories &&\
+  apk add bash && \
   apk add --update $RUNTIME_DEPS && \
   apk add --virtual build_deps $BUILD_DEPS &&  \
   cp /usr/bin/envsubst /usr/local/bin/envsubst && \
@@ -18,4 +19,4 @@ COPY docker-entrypoint.sh /docker-entrypoint.sh
 VOLUME /data
 USER root
 EXPOSE 6379 16379
-ENTRYPOINT ["bash","/docker-entrypoint.sh"]
+ENTRYPOINT ["/bin/bash","/docker-entrypoint.sh"]

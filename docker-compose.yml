@@ -795,7 +795,7 @@ services:
     ports:
       - "${REDIS_CLUSTER_PORT_RANGE}:7000-7005"
     volumes:
-      - ${DATA_PATH_HOST}/redis-cluster:/data  
+      - ${DATA_PATH_HOST}/redis-cluster:/data
     networks:
       - backend
 
@@ -1072,7 +1072,7 @@ services:
       - cluster.name=laradock-cluster
       - node.name=laradock-node
       - bootstrap.memory_lock=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m"
       - "discovery.type=single-node"
       #- discovery.seed_hosts=elasticsearch-3,elasticsearch-2
       #- discovery.zen.ping.unicast.hosts=elasticsearch-3,elasticsearch-2
@@ -1619,7 +1619,7 @@ services:
     build:
       context: ./jupyterhub
       dockerfile: Dockerfile.user
-    command: ["sh", "-c", 'echo "build only"']
+    command: [ "sh", "-c", 'echo "build only"' ]
 
   ### IPython #########################################
   ipython-controller:
@@ -1835,7 +1835,7 @@ services:
       [
         "sh",
         "-c",
-        'echo ${MAILU_INIT_ADMIN_USERNAME}@${MAILU_DOMAIN} ${MAILU_INIT_ADMIN_PASSWORD} ;python manage.py advertise ; python manage.py db upgrade ; python manage.py admin ${MAILU_INIT_ADMIN_USERNAME} ${MAILU_DOMAIN} ${MAILU_INIT_ADMIN_PASSWORD} || true;sed -i -- "s/= Off/= On/g" /webmail/_data_/_default_/configs/config.ini || true;if grep -Fq "registration_link_url" /webmail/_data_/_default_/configs/config.ini;then echo Already set!;else echo "" >> /webmail/_data_/_default_/configs/config.ini; echo "[login]" >> /webmail/_data_/_default_/configs/config.ini;echo "registration_link_url = ''${MAILU_WEBSITE}${MAILU_WEB_ADMIN}/ui/user/signup''" >> /webmail/_data_/_default_/configs/config.ini;fi',
+        'echo ${MAILU_INIT_ADMIN_USERNAME}@${MAILU_DOMAIN} ${MAILU_INIT_ADMIN_PASSWORD} ;python manage.py advertise ; python manage.py db upgrade ; python manage.py admin ${MAILU_INIT_ADMIN_USERNAME} ${MAILU_DOMAIN} ${MAILU_INIT_ADMIN_PASSWORD} || true;sed -i -- "s/= Off/= On/g" /webmail/_data_/_default_/configs/config.ini || true;if grep -Fq "registration_link_url" /webmail/_data_/_default_/configs/config.ini;then echo Already set!;else echo "" >> /webmail/_data_/_default_/configs/config.ini; echo "[login]" >> /webmail/_data_/_default_/configs/config.ini;echo "registration_link_url = ''${MAILU_WEBSITE}${MAILU_WEB_ADMIN}/ui/user/signup''" >> /webmail/_data_/_default_/configs/config.ini;fi'
       ]
     networks:
       - backend
@@ -2126,7 +2126,7 @@ services:
       - ${DATA_PATH_HOST}/tomcat/logs:/usr/local/tomcat/logs
     # restart: always
 
-  ### react #####################################################
+    ### react #####################################################
   react:
     build:
       context: ./react
@@ -2418,7 +2418,7 @@ services:
       - METHOD=aes-256-cfb
       - PASSWORD=shapixiaolaodi
     volumes:
-      - ${DATA_PATH_HOST}/tidb:/tmp/tidb  
+      - ${DATA_PATH_HOST}/tidb:/tmp/tidb
     networks:
       - frontend
       - backend
@@ -2434,7 +2434,7 @@ services:
     networks:
       - frontend
       - backend
-    tty: true  
+    tty: true
 
   ### go ################################################
   java:
@@ -2474,6 +2474,13 @@ services:
     networks:
       - backend
       - frontend
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
     tty: true
   ### kafka ################################################
   pulsar-manager:
@@ -2482,7 +2489,7 @@ services:
     ports:
       - "9529:9527"
       - "7750:7750"
-    environment: 
+    environment:
       - SPRING_CONFIGURATION_FILE=/pulsar-manager/pulsar-manager/application.properties
     networks:
       - backend
@@ -2491,7 +2498,7 @@ services:
   kafka-eagle:
     build:
       context: ./kafka-eagle
-    privileged: true  
+    privileged: true
     ports:
       - "8048:8048"
     environment:
@@ -2501,7 +2508,7 @@ services:
       - frontend
     tty: true
 
-### MOSQUITTO Broker #########################################
+  ### MOSQUITTO Broker #########################################
   v2ray-tls:
     build:
       context: ./v2ray-tls
@@ -2516,8 +2523,8 @@ services:
       - frontend
       - backend
     restart: always
-    tty: true  
-### tiup #########################################
+    tty: true
+  ### tiup #########################################
   tiup:
     build:
       context: ./tiup
@@ -2526,7 +2533,7 @@ services:
       - "10000:3000"
       - "10930:9093"
       - "10940:9094"
-    depends_on:  
+    depends_on:
       - tinode-1
       - tinode-2
       - tinode-3
@@ -2537,8 +2544,8 @@ services:
       - frontend
       - backend
     restart: always
-    tty: true    
-### tiup #########################################
+    tty: true
+  ### tiup #########################################
   tinode-1:
     build:
       context: ./tinode
@@ -2549,8 +2556,8 @@ services:
       - frontend
       - backend
     restart: always
-    tty: true    
-### tiup #########################################
+    tty: true
+  ### tiup #########################################
   tinode-2:
     build:
       context: ./tinode
@@ -2561,8 +2568,8 @@ services:
       - frontend
       - backend
     restart: always
-    tty: true    
-### tiup #########################################
+    tty: true
+  ### tiup #########################################
   tinode-3:
     build:
       context: ./tinode
@@ -2573,8 +2580,8 @@ services:
       - frontend
       - backend
     restart: always
-    tty: true    
-### tiup #########################################
+    tty: true
+  ### tiup #########################################
   predixy:
     build:
       context: ./predixy
@@ -2586,12 +2593,141 @@ services:
     networks:
       - frontend
       - backend
-    ports: 
-      - "7617:7617"  
+    ports:
+      - "7617:7617"
     restart: always
-    tty: true      
+    tty: true
 
+  ### kafka-cluster1 ################################################
+  kafka-cluster1:
+    build:
+      context: ./kafka-cluster
+    volumes:
+      - ${DATA_PATH_HOST}/kafka-cluster/1:${KAFKA_DATA_DIRS}
+    environment:
+      - KAFKA_LISTENERS=PLAINTEXT://kafka-cluster1:9092
+      - KAFKA_LISTENERS_KRAFT=PLAINTEXT://kafka-cluster1:9092,CONTROLLER://kafka-cluster1:9093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-cluster1:9092
+      - ZOOKEEPER_CONNECT=zk1:2181,zk2:2181,zk3:2181
+      - KAFKA_BROKER_ID=1
+      - KAFKA_DATA_DIRS=${KAFKA_DATA_DIRS}
+      - KAFKA_CONTROLLER_VOTERS=1@kafka-cluster1,2@kafka-cluster2,3@kafka-cluster3
+    ports:
+      - "9192:9092"
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - zk1
+      - kafka-cluster2
+      - kafka-cluster3
+    tty: true
 
+  kafka-cluster2:
+    build:
+      context: ./kafka-cluster
+    volumes:
+      - ${DATA_PATH_HOST}/kafka-cluster/2:${KAFKA_DATA_DIRS}
+    environment:
+      - KAFKA_LISTENERS=PLAINTEXT://kafka-cluster2:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-cluster2:9092
+      - KAFKA_LISTENERS_KRAFT=PLAINTEXT://kafka-cluster2:9092,CONTROLLER://kafka-cluster2:9093
+      - ZOOKEEPER_CONNECT=zk1:2181,zk2:2181,zk3:2181
+      - KAFKA_BROKER_ID=2
+      - KAFKA_DATA_DIRS=${KAFKA_DATA_DIRS}
+      - KAFKA_CONTROLLER_VOTERS=1@kafka-cluster1,2@kafka-cluster2,3@kafka-cluster3
+    ports:
+      - "9292:9092"
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - zookeeper
+    tty: true
 
+  kafka-cluster3:
+    build:
+      context: ./kafka-cluster
+    volumes:
+      - ${DATA_PATH_HOST}/kafka-cluster/3:${KAFKA_DATA_DIRS}
+    environment:
+      - KAFKA_LISTENERS=PLAINTEXT://kafka-cluster3:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka-cluster3:9092
+      - KAFKA_LISTENERS_KRAFT=PLAINTEXT://kafka-cluster3:9092,CONTROLLER://kafka-cluster3:9093
+      - ZOOKEEPER_CONNECT=zk1:2181,zk2:2181,zk3:2181
+      - KAFKA_BROKER_ID=3
+      - KAFKA_DATA_DIRS=${KAFKA_DATA_DIRS}
+      - KAFKA_CONTROLLER_VOTERS=1@kafka-cluster1,2@kafka-cluster2,3@kafka-cluster3
+    ports:
+      - "9392:9092"
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - zookeeper
+    tty: true
+  ### zookeeper-cluster ################################################    
+  zk1:
+    build:
+      context: ./zookeeper-cluster
+      args:
+        - ZOOKEEPER_VERSION=${ZOOKEEPER_VERSION}
+    environment:
 
-
+      - ZOOKEEPER_DATA=${ZOOKEEPER_DATA}
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zk1:2888:3888\nserver.2=zk2:2888:3888\nserver.3=zk3:2888:3888
+    ports:
+      - 21181:2181
+      - 38881:3888
+      - 28881:2888
+      - 7100:7000
+    volumes:
+      - ${DATA_PATH_HOST}/zookeeper-cluster/1:${ZOOKEEPER_DATA}
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - zk2
+      - zk3
+    tty: true
+  zk2:
+    build:
+      context: ./zookeeper-cluster
+      args:
+        - ZOOKEEPER_VERSION=${ZOOKEEPER_VERSION}
+    environment:
+      - ZOOKEEPER_DATA=${ZOOKEEPER_DATA}
+      - ZOO_MY_ID=2
+      - ZOO_SERVERS=server.1=zk1:2888:3888\nserver.2=zk2:2888:3888\nserver.3=zk3:2888:3888
+    ports:
+      - 21182:2181
+      - 38882:3888
+      - 28882:2888
+      - 7200:7000
+    volumes:
+      - ${DATA_PATH_HOST}/zookeeper-cluster/2:${ZOOKEEPER_DATA}
+    networks:
+      - backend
+      - frontend
+    tty: true
+  zk3:
+    build:
+      context: ./zookeeper-cluster
+      args:
+        - ZOOKEEPER_VERSION=${ZOOKEEPER_VERSION}
+    environment:
+      - ZOOKEEPER_DATA=${ZOOKEEPER_DATA}
+      - ZOO_MY_ID=3
+      - ZOO_SERVERS=server.1=zk1:2888:3888\nserver.2=zk2:2888:3888\nserver.3=zk3:2888:3888
+    ports:
+      - 21183:2181
+      - 38883:3888
+      - 28883:2888
+      - 7300:7000
+    volumes:
+      - ${DATA_PATH_HOST}/zookeeper-cluster/3:${ZOOKEEPER_DATA}
+    networks:
+      - backend
+      - frontend
+    tty: true
