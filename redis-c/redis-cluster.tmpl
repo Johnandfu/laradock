@@ -7,6 +7,7 @@ masterauth 123456
 protected-mode no
 # 开启集群
 cluster-enabled yes
+daemonize yes
 # 集群节点配置
 cluster-config-file nodes-6379.conf
 # 超时
@@ -34,4 +35,6 @@ appendonly yes
 # warning:仅记录非常重要、关键的警告消息
 #loglevel notice
 # 日志文件路径
-#logfile "/home/redis-cluster/log/redis${PORT}.log"
+logfile /data/redis-cluster/log/redis.log"
+pidfile /data/redis-cluster/redis.pid
+dir /data/redis-cluster/cacheData

@@ -692,7 +692,7 @@ services:
     volumes:
       - ${DATA_PATH_HOST}/redis-c:/data
     environment:
-      - REDIS_NODES={$REDIS_NODES}
+      - REDIS_NODES=${REDIS_NODES}
     ports:
       - "5001:6379"
     depends_on:
@@ -704,6 +704,7 @@ services:
       - redis7
       - redis8
       - redis9
+      - redis10
     networks:
       - backend
   ### Redis ################################################
@@ -778,6 +779,15 @@ services:
       - "5009:6379"
     networks:
       - backend
+  ### Redis ################################################
+  redis10:
+    build: ./redis-c
+    volumes:
+      - ${DATA_PATH_HOST}/redis9:/data
+    ports:
+      - "5010:6379"
+    networks:
+      - backend
 
   ### Redis ################################################
   redis:
@@ -793,11 +803,12 @@ services:
   redis-cluster:
     build: ./redis-cluster
     ports:
-      - "${REDIS_CLUSTER_PORT_RANGE}:7000-7005"
+      - "6377:6379"
     volumes:
       - ${DATA_PATH_HOST}/redis-cluster:/data
     networks:
       - backend
+    tty: true
 
   ### ZooKeeper #########################################
   zookeeper:
@@ -2199,41 +2210,6 @@ services:
       - backend
     tty: true
 
-  ### kafka ################################################
-  kafka:
-    build:
-      context: ./kafka
-    environment:
-      LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_JMX_OPTS: -Djava.rmi.server.hostname=kafka -Dcom.sun.management.jmxremote.host=0.0.0.0 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false
-      KAFKA_HEAP_OPTS: -server -Xms2G -Xmx2G -XX:PermSize=128m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=8 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70
-    volumes:
-      - ${DATA_PATH_HOST}/kafka:/data
-    ports:
-      - "9092:9092"
-      - "9988:9988"
-    depends_on:
-      - zookeeper
-    networks:
-      - backend
-      - frontend
-    tty: true
-  ### kafka-manager ################################################
-  kafka-manager:
-    build:
-      context: ./kafka-manager
-    environment:
-      ZK_HOSTS: zookeeper:2181
-    ports:
-      - "9900:9000"
-    volumes:
-      - ${DATA_PATH_HOST}/kafka-manager:/cmak/logs
-    depends_on:
-      - zookeeper
-    networks:
-      - backend
-    tty: true
   ### nodejs ################################################
   nodejs:
     build:
@@ -2489,8 +2465,6 @@ services:
     ports:
       - "9529:9527"
       - "7750:7750"
-    environment:
-      - SPRING_CONFIGURATION_FILE=/pulsar-manager/pulsar-manager/application.properties
     networks:
       - backend
       - frontend
@@ -2658,6 +2632,9 @@ services:
       - KAFKA_BROKER_ID=3
       - KAFKA_DATA_DIRS=${KAFKA_DATA_DIRS}
       - KAFKA_CONTROLLER_VOTERS=1@kafka-cluster1,2@kafka-cluster2,3@kafka-cluster3
+      #- KAFKA_JMX_OPTS=-Djava.rmi.server.hostname=kafka -Dcom.sun.management.jmxremote.host=0.0.0.0 -Dcom.sun.management.jmxremote.local.only=false -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false  -Dcom.sun.management.jmxremote.ssl=false
+      #- KAFKA_HEAP_OPTS=-server -Xms2G -Xmx2G -XX:PermSize=128m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:ParallelGCThreads=8 -XX:ConcGCThreads=5 -XX:InitiatingHeapOccupancyPercent=70
+
     ports:
       - "9392:9092"
     networks:
@@ -2731,3 +2708,151 @@ services:
       - backend
       - frontend
     tty: true
+  ### pulsar-cluster1 ################################################
+  pulsar-cluster1:
+    build:
+      context: ./pulsar-cluster
+    volumes:
+      - ${DATA_PATH_HOST}/pulsar-cluster/1/journal:${journalDirectory}
+      - ${DATA_PATH_HOST}/pulsar-cluster/1/ledger:${ledgerDirectories}
+      - ${DATA_PATH_HOST}/pulsar-cluster/1/zookeeper:${zookeeperDataDir}
+    environment:
+      - ledgerDirectories=${ledgerDirectories}
+      - journalDirectory=${journalDirectory}
+      - zookeeperDataDir=${zookeeperDataDir}
+      - advertisedaddress=pulsar-cluster1
+      - zkservers=zk1:2181,zk2:2181,zk3:2181
+      - prometheusstatshttpport=8100
+      - init_cluster=1
+      - clusterName=pulsar-cluster-zk
+      - ZOO_SERVERS=server.1=pulsar-cluster1:2888:3888\nserver.2=pulsar-cluster2:2888:3888\nserver.3=pulsar-cluster3:2888:3888
+      - ZOO_SERVERS_ID=1
+    ports:
+      - "6651:6650"
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - zk1
+      - pulsar-cluster2
+      - pulsar-cluster3
+    tty: true
+    privileged: true
+
+  pulsar-cluster2:
+    build:
+      context: ./pulsar-cluster
+    volumes:
+      - ${DATA_PATH_HOST}/pulsar-cluster/2/journal:${journalDirectory}
+      - ${DATA_PATH_HOST}/pulsar-cluster/2/ledger:${ledgerDirectories}
+      - ${DATA_PATH_HOST}/pulsar-cluster/2/zookeeper:${zookeeperDataDir}
+    environment:
+      - ledgerDirectories=${ledgerDirectories}
+      - journalDirectory=${journalDirectory}
+      - zookeeperDataDir=${zookeeperDataDir}
+      - advertisedaddress=pulsar-cluster2
+      - zkservers=zk1:2181,zk2:2181,zk3:2181
+      - prometheusstatshttpport=8100
+      - clusterName=pulsar-cluster-zk
+      - ZOO_SERVERS=server.1=pulsar-cluster1:2888:3888\nserver.2=pulsar-cluster2:2888:3888\nserver.3=pulsar-cluster3:2888:3888
+      - ZOO_SERVERS_ID=2
+    ports:
+      - "6652:6650"
+    privileged: true
+    networks:
+      - backend
+      - frontend
+    tty: true
+  ### pulsar-cluster1 ################################################
+  pulsar-cluster3:
+    build:
+      context: ./pulsar-cluster
+    volumes:
+      - ${DATA_PATH_HOST}/pulsar-cluster/3/journal:${journalDirectory}
+      - ${DATA_PATH_HOST}/pulsar-cluster/3/ledger:${ledgerDirectories}
+      - ${DATA_PATH_HOST}/pulsar-cluster/3/zookeeper:${zookeeperDataDir}
+    environment:
+      - ledgerDirectories=${ledgerDirectories}
+      - journalDirectory=${journalDirectory}
+      - zookeeperDataDir=${zookeeperDataDir}
+      - advertisedaddress=pulsar-cluster3
+      - zkservers=zk1:2181,zk2:2181,zk3:2181
+      - prometheusstatshttpport=8100
+      - clusterName=pulsar-cluster-zk
+      - ZOO_SERVERS=server.1=pulsar-cluster1:2888:3888\nserver.2=pulsar-cluster2:2888:3888\nserver.3=pulsar-cluster3:2888:3888
+      - ZOO_SERVERS_ID=3
+    ports:
+      - "6653:6650"
+    privileged: true
+    networks:
+      - backend
+      - frontend
+    tty: true
+  ### Mercure #############################################
+  centos-lvs-master:
+    build: ./alpine-lvs
+    ports:
+      - "8041:80"
+    privileged: true
+    environment:
+      - MERCURE_PUBLISHER_JWT_KEY=${MERCURE_PUBLISHER_JWT_KEY}
+      - nodeone=MASTER
+      - nodetwo=BACKUP
+      - LVS_NGINX=master
+      - priority_id_one=100
+      - priority_id_two=50
+    networks:
+      - frontend
+      - backend
+  ### Mercure #############################################
+  centos-lvs-back:
+    build: ./alpine-lvs
+    ports:
+      - "8042:80"
+    privileged: true
+    environment:
+      - MERCURE_PUBLISHER_JWT_KEY=${MERCURE_PUBLISHER_JWT_KEY}
+      - nodetwo=MASTER
+      - nodeone=BACKUP
+      - LVS_NGINX=slave
+      - priority_id_one=50
+      - priority_id_two=100
+    networks:
+      - frontend
+      - backend
+  ### Mercure #############################################
+  centos-lvs-nginx-a:
+    build: ./alpine-nginx
+    ports:
+      - "8043:80"
+    privileged: true
+    environment:
+      - LVS_NGINX=master-nginx
+    networks:
+      - frontend
+      - backend
+  ### Mercure #############################################
+  centos-lvs-nginx-b:
+    build: ./alpine-nginx
+    ports:
+      - "8044:80"
+    privileged: true
+    environment:
+      - LVS_NGINX=slave-nginx
+    networks:
+      - frontend
+      - backend
+  ### netbase #############################################
+  netbase:
+    build: ./netbase
+    ports:
+      - "3003:3000"
+    privileged: true
+    volumes:
+      - ${APP_CODE_PATH_HOST}/:/var/www/
+    environment:
+      - LVS_NGINX=slave-nginx
+    networks:
+      - frontend
+      - backend
+      

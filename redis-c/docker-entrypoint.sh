@@ -1,5 +1,5 @@
-#!/bin/sh
-envsubst < /usr/local/etc/redis/redis-cluster.tmpl >/usr/local/etc/redis/redis.conf
+#!/bin/bash
+envsubst </usr/local/etc/redis/redis-cluster.tmpl >/usr/local/etc/redis/redis.conf
 eval redis-server /usr/local/etc/redis/redis.conf
 
 if [ -n "$REDIS_NODES" ]; then
@@ -17,9 +17,9 @@ if [ -n "$REDIS_NODES" ]; then
         fi
     done
     if [ -n "$nodes" ]; then
-        echo "yes" | eval redis-cli --cluster create --cluster-replicas 1 "$nodes"
+        echo "yes" | eval redis-cli -a 123456 --cluster create --cluster-replicas 1 "$nodes"
+        echo "$nodes"
     fi
 else
-    
-    exit 0
+    echo 'slave'
 fi

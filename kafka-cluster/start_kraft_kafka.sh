@@ -27,8 +27,8 @@ else
   echo "Using inter broker listener name: ${KAFKA_INTER_BROKER_LISTENER_NAME}"
   sed -r -i "s@^#?inter.broker.listener.name=.*@inter.broker.listener.name=$KAFKA_INTER_BROKER_LISTENER_NAME@g" "/opt/kafka/config/kraft/server.properties"
 fi
-  sed -r -i "s@^#?controller.quorum.voters=.*@controller.quorum.voters=$KAFKA_CONTROLLER_VOTERS@g" "/opt/kafka/config/kraft/server.properties"
-  sed -r -i "s@^#?node.id=.*@node.id=$KAFKA_BROKER_ID@g" "/opt/kafka/config/server.properties"
+sed -r -i "s@^#?controller.quorum.voters=.*@controller.quorum.voters=$KAFKA_CONTROLLER_VOTERS@g" "/opt/kafka/config/kraft/server.properties"
+sed -r -i "s@^#?node.id=.*@node.id=$KAFKA_BROKER_ID@g" "/opt/kafka/config/server.properties"
 uuid=$(/opt/kafka/bin/kafka-storage.sh random-uuid)
 /opt/kafka/bin/kafka-storage.sh format -t $uuid -c /opt/kafka/config/kraft/server.properties
 exce -c JMX_PORT=9988 /opt/kafka/bin/kafka-server-start.sh /opt/kafka/config/kraft/server.properties
