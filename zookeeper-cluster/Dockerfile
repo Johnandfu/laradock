@@ -7,7 +7,7 @@ USER root
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
   && apk add curl openjdk14-jre bash\
  # && adduser -D -g 'www' www\
-  && curl -k  "https://mirrors.tuna.tsinghua.edu.cn/apache/zookeeper/zookeeper-${ZOOKEEPER_VERSION}/apache-zookeeper-${ZOOKEEPER_VERSION}-bin.tar.gz" | tar -zxvf - -C /opt/zookeeper   --strip-components 1 \ 
+  && curl -k  "https://mirrors.aliyun.com/apache/zookeeper/zookeeper-${ZOOKEEPER_VERSION}/apache-zookeeper-${ZOOKEEPER_VERSION}-bin.tar.gz" | tar -zxvf - -C /opt/zookeeper   --strip-components 1 \ 
   && cp /opt/zookeeper/conf/zoo_sample.cfg /opt/zookeeper/conf/zoo.cfg \
   && chmod a+x /opt/zookeeper/entrypoint.sh \
   && mkdir -p /var/zookeeper \

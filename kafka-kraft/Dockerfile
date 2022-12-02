@@ -1,11 +1,12 @@
 FROM alpine:3.13
-ENV KAFKA_VERSION=2.8.0
+ENV KAFKA_VERSION=3.3.1
 ENV SCALA_VERSION=2.13
 #ENV KAFKA_LISTENERS=kafka-kraft
-RUN apk update \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+    #&& apk update \
     && apk add --no-cache bash curl jq  openjdk8-jre\
-    && curl -k "https://mirrors.tuna.tsinghua.edu.cn/apache/kafka/2.8.0/kafka_2.13-2.8.0.tgz" | tar -xzf - -C /opt \
-    && mv /opt/kafka_2.13-2.8.0 /opt/kafka \
+    && curl -k "https://mirrors.aliyun.com/apache/kafka/${KAFKA_VERSION}/kafka_${SCALA_VERSION}-${KAFKA_VERSION}.tgz" | tar -xzf - -C /opt \
+    && mv /opt/kafka_${SCALA_VERSION}-${KAFKA_VERSION} /opt/kafka \
     && apk del curl jq
 USER root
 WORKDIR /opt/kafka

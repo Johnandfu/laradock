@@ -8,7 +8,7 @@ USER root
 ADD ./start_pulsar.sh /opt/pulsar/
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
   && apk --update  add  curl bash  openjdk14-jre \
-  && curl -k https://mirrors.tuna.tsinghua.edu.cn/apache/pulsar/pulsar-${version}/apache-pulsar-${download}.tar.gz | tar -zxvf - -C /opt/pulsar --strip-components 1   \
+  && curl -k https://mirrors.aliyun.com/apache/pulsar/pulsar-${version}/apache-pulsar-${download}.tar.gz | tar -zxvf - -C /opt/pulsar --strip-components 1   \
   && apk del curl \
   && chmod a+x /opt/pulsar/start_pulsar.sh
 

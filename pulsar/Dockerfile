@@ -6,7 +6,7 @@ WORKDIR /opt/sh
 USER root
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
   && apk --no-cache  add  wget bash  libstdc++ \
-  && wget -q https://mirrors.tuna.tsinghua.edu.cn/apache/pulsar/pulsar-${version}/apache-pulsar-${download}.tar.gz  \
+  && wget -q https://mirrors.aliyun.com/apache/pulsar/pulsar-${version}/apache-pulsar-${download}.tar.gz  \
   && mkdir -p /opt/sh/pulsar \
   && tar -xf apache-pulsar-${download}.tar.gz -C /opt/sh/pulsar --strip-components 1  \
   && rm -rf apache-pulsar-${download}.tar.gz
