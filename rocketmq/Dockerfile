@@ -2,7 +2,7 @@ FROM openjdk:8u212-alpine
 #FROM alpine:latest
 
 # Rocketmq version
-ENV ROCKETMQ_VERSION 4.9.1
+ENV ROCKETMQ_VERSION=5.0.0
 
 # Rocketmq home
 ENV ROCKETMQ_HOME  /home/rocketmq/rocketmq-${ROCKETMQ_VERSION}
@@ -10,10 +10,10 @@ ENV ROCKETMQ_HOME  /home/rocketmq/rocketmq-${ROCKETMQ_VERSION}
 WORKDIR  ${ROCKETMQ_HOME}
 
 # Install
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
-  apk add --no-cache bash gettext curl  nmap-ncat openssl busybox-extras \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories \
+  && apk add --no-cache bash gettext curl  nmap-ncat openssl busybox-extras \
   && apk add --virtual .build-deps curl gnupg unzip \
-  && curl -L https://mirrors.aliyun.com/apache/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o rocketmq.zip \
+  && curl -L http://mirrors.ustc.edu.cn/apache/rocketmq/${ROCKETMQ_VERSION}/rocketmq-all-${ROCKETMQ_VERSION}-bin-release.zip -o rocketmq.zip \
   #https://www.apache.org/dist/rocketmq/KEYS
   && unzip rocketmq.zip \
   && mv rocketmq-all*/* . \

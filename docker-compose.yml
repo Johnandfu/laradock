@@ -2463,11 +2463,14 @@ services:
     build:
       context: ./pulsar-manager
     ports:
-      - "9529:9527"
+      - "9527:9527"
       - "7750:7750"
+    environment:
+      SPRING_CONFIGURATION_FILE: /opt/pulsar-manager/pulsar-manager/application.properties  
     networks:
       - backend
       - frontend
+    tty: true
   ### kafka ################################################
   kafka-eagle:
     build:

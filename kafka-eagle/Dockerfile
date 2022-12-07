@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine
-ENV EAGLE_VERSION=3.0.0
+ENV EAGLE_VERSION=3.0.2
 ENV KE_HOME=/opt/kafka-eagle
 WORKDIR /opt/kafka-eagle
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
