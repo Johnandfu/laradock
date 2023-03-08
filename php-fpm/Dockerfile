@@ -20,7 +20,7 @@ chmod +x /usr/local/bin/install-php-extensions && \
     # && curl -sS https://getcomposer.org/installer | php \
     # && mv composer.phar /usr/local/bin/composer \
     # && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
-    && docker-php-ext-configure gd --enable-gd --with-freetype-dir --with-jpeg-dir --with-webp-dir --with-png-dir \ 
+    && docker-php-ext-configure gd  --with-freetype-dir --with-jpeg-dir --with-webp-dir --with-png-dir \ 
     && install-php-extensions exif mysqli pdo_mysql zip sockets  imagick rdkafka  amqp redis swoole  seaslog bcmath\
     && docker-php-ext-install gd \
     && apk del .build-deps \
