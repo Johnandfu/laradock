@@ -6,7 +6,7 @@ ARG timezone
 ENV TIMEZONE=${timezone:-"Asia/Shanghai"} \
   APP_ENV=prod \
   SCAN_CACHEABLE=(true)
-WORKDIR /var/www
+WORKDIR /var/www/hcms
 
 # update
 RUN set -ex \
