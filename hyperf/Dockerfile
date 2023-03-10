@@ -6,6 +6,7 @@ ARG timezone
 ENV TIMEZONE=${timezone:-"Asia/Shanghai"} \
   APP_ENV=prod \
   SCAN_CACHEABLE=(true)
+WORKDIR /var/www
 
 # update
 RUN set -ex \
@@ -29,7 +30,7 @@ RUN set -ex \
   && rm -rf /var/cache/apk/* /tmp/* /usr/share/man \
   && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
-WORKDIR /var/www
+
 
 RUN composer install --no-dev -o && php bin/hyperf.php
 
