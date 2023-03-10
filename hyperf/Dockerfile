@@ -31,13 +31,8 @@ RUN set -ex \
 
 WORKDIR /var/www
 
-# Composer Cache
-# COPY ./composer.* /opt/www/
-# RUN composer install --no-dev --no-scripts
-
-COPY . /var/www
 RUN composer install --no-dev -o && php bin/hyperf.php
 
-EXPOSE 9501
+EXPOSE 9066
 
-ENTRYPOINT ["php", "/opt/www/hcms/bin/hyperf.php", "server:watch"]
+ENTRYPOINT ["php", "/var/www/hcms/bin/hyperf.php", "start"]
