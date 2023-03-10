@@ -31,9 +31,6 @@ RUN set -ex \
   && echo -e "\033[42;37m Build Completed :).\033[0m\n"
 
 
-
-RUN composer install --no-dev -o && php bin/hyperf.php
-
 EXPOSE 9066
 
 ENTRYPOINT ["php", "/var/www/hcms/bin/hyperf.php", "start"]
