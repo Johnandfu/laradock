@@ -2858,4 +2858,17 @@ services:
     networks:
       - frontend
       - backend
+
+ ### php-apine ################################################
+  php-hyperf:
+    build:
+      context: ./hyperf
+    volumes:
+      - ${APP_CODE_PATH_HOST}/:/var/www/
+    ports:
+      # - "9999:9000"
+      - "9066:9501"
+    networks:
+      - backend
+    tty: true      
       

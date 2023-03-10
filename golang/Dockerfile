@@ -1,6 +1,6 @@
 FROM  golang:alpine
 LABEL maintainer="Mahmoud Zalt <mahmoud@zalt.me>"
-WORKDIR /go/web/gin-admin
+WORKDIR /go/web/go-admin
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories  \ 
     && apk --no-cache update \
     && go env -w GO111MODULE=on \
