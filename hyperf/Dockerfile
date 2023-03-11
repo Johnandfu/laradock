@@ -3,9 +3,9 @@
 FROM hyperf/hyperf:8.0-alpine-v3.16-swoole
 ARG timezone
 
-ENV TIMEZONE=${timezone:-"Asia/Shanghai"} \
-  APP_ENV=prod \
-  SCAN_CACHEABLE=(true)
+ENV TIMEZONE=${timezone:-"Asia/Shanghai"} 
+ # APP_ENV=prod \
+ # SCAN_CACHEABLE=(true)
 WORKDIR /var/www/hcms
 
 # update
