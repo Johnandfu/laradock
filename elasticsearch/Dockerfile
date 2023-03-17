@@ -1,4 +1,4 @@
-FROM elasticsearch:7.14.1
+FROM elasticsearch:8.6.2
 # ADD https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.8.8/elasticsearch-analysis-ik-6.8.8.zip /tmp/
 # RUN elasticsearch-plugin install -b file:///tmp/elasticsearch-analysis-ik-6.8.8.zip
 

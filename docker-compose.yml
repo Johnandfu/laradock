@@ -2466,7 +2466,7 @@ services:
       - "9527:9527"
       - "7750:7750"
     environment:
-      SPRING_CONFIGURATION_FILE: /opt/pulsar-manager/pulsar-manager/application.properties  
+      SPRING_CONFIGURATION_FILE: /opt/pulsar-manager/pulsar-manager/application.properties
     networks:
       - backend
       - frontend
@@ -2859,7 +2859,7 @@ services:
       - frontend
       - backend
 
- ### php-apine ################################################
+  ### php-apine ################################################
   php-hyperf:
     build:
       context: ./hyperf
@@ -2870,5 +2870,4 @@ services:
       - "9066:9501"
     networks:
       - backend
-    tty: true      
-      
+    tty: true
