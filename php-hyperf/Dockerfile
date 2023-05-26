@@ -33,4 +33,6 @@ RUN set -ex \
 
 EXPOSE 9066
 
-ENTRYPOINT ["php", "/var/www/hcms/bin/hyperf.php", "start"]
+#CMD ["php-fpm"]
+ENTRYPOINT ["php", "/var/www/hcms/bin/hyperf.php", "server:watch"]
+
