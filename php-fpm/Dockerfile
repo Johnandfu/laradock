@@ -36,7 +36,7 @@
 # PLEASE DO NOT EDIT IT DIRECTLY.
 #
 
-FROM php:8.0-fpm-alpine
+FROM php:7.4-fpm-alpine
 
 USER root
 
@@ -44,7 +44,7 @@ USER root
 WORKDIR /var/www/tp
 ADD  https://ghproxy.com/https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
-
+ENV TZ=Asia/Shanghai
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \ 
   chmod +x /usr/local/bin/install-php-extensions && \
   apk add --no-cache --virtual .build-deps\
@@ -53,14 +53,9 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
   # && mv composer.phar /usr/local/bin/composer \
   # && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
   # && docker-php-ext-install gd \
-  && docker-php-ext-configure gd \
-  --enable-gd \
-  --with-webp \
-  --with-jpeg \
-  --with-freetype \
-  --enable-gd-jis-conv \
+  && docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp  \
   && docker-php-ext-install -j$(nproc) gd \
-  && install-php-extensions pcntl exif mysqli pdo_mysql zip sockets  imagick rdkafka  amqp redis swoole  seaslog bcmath \
+  && install-php-extensions pcntl exif mysqli pdo_mysql zip sockets  imagick  amqp redis seaslog bcmath \
   && apk del .build-deps \
   && rm -rf /var/cache/apk/* \
   && rm -rf /tmp/pear 
