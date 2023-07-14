@@ -24,7 +24,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
   && docker-php-ext-configure gd --with-freetype-dir=/usr/lib/ --with-png-dir=/usr/lib/ --with-jpeg-dir=/usr/lib/ --with-gd \
   # && docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp \
   && docker-php-ext-install -j$(nproc) gd \
-  && install-php-extensions pcntl mcrypt exif mysqli pdo_mysql zip sockets  imagick   amqp redis swoole  seaslog bcmath \
+  && install-php-extensions pcntl mcrypt exif mysqli pdo_mysql zip sockets  imagick   amqp redis  bcmath \
   && apk del .build-deps \
   && rm -rf /var/cache/apk/* \
   && rm -rf /tmp/pear 

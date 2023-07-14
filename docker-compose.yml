@@ -1085,6 +1085,7 @@ services:
       - bootstrap.memory_lock=false
       - "ES_JAVA_OPTS=-Xms2048m -Xmx2048m"
       - "discovery.type=single-node"
+      - xpack.security.enabled=false
       #- discovery.seed_hosts=elasticsearch-3,elasticsearch-2
       #- discovery.zen.ping.unicast.hosts=elasticsearch-3,elasticsearch-2
     ulimits:
