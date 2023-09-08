@@ -1,5 +1,6 @@
 FROM minio/minio
+#FROM bitnami/minio
 
 LABEL maintainer="Thor Erik Lie <thor@thorerik.com>"
-
-ENTRYPOINT ["minio", "server", "/export"]
+CMD ["server","/data","--console-address",":9001"]
+EXPOSE 9000 9001

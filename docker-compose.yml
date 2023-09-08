@@ -483,13 +483,16 @@ services:
   minio:
     build: ./minio
     volumes:
-      - ${DATA_PATH_HOST}/minio/data:/export
+      - ${DATA_PATH_HOST}/minio/data:/data
       - ${DATA_PATH_HOST}/minio/config:/root/.minio
     ports:
       - "${MINIO_PORT}:9000"
+      - "19001:9001"
     environment:
       - MINIO_ACCESS_KEY=access
       - MINIO_SECRET_KEY=secretkey
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=admin123
     networks:
       - frontend
       - backend
@@ -887,7 +890,6 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}
-    hostname: laradock-rabbitmq
     volumes:
       - ${DATA_PATH_HOST}/rabbitmq:/var/lib/rabbitmq/mnesia
     depends_on:
@@ -1178,13 +1180,9 @@ services:
         - ELK_VERSION=${ELK_VERSION}
     volumes:
       - "./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml"
-      - "./logstash/pipeline:/usr/share/logstash/pipeline"
+      - "./logstash/pipeline/:/usr/share/logstash/pipeline/"
     ports:
-      - "5001:5001"
-    environment:
-      LS_JAVA_OPTS: "-Xmx1g -Xms1g"
-    env_file:
-      - .env
+      - "5044:5044"
     networks:
       - frontend
       - backend
@@ -2872,5 +2870,22 @@ services:
     networks:
       - backend
       - frontend
-    tty: true      
+    tty: true
+
+  
+  ### Blackfire ########################################
+  nacos-registry:
+    image: nacos/nacos-server
+    environment:
+      - "MODE=standalone"
+    tty: true
+    ports:
+      - 18848:8848
+    networks:
+      - backend      
+
+
+
+
+
       

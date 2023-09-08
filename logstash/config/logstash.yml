@@ -1,5 +1,7 @@
 http.host: "0.0.0.0"
-
-xpack.monitoring.enabled: false
-config.reload.automatic: true
+xpack.monitoring.enabled: true
+xpack.monitoring.elasticsearch.hosts: ["http://elasticsearch:9200"]  #es地址
+#xpack.monitoring.elasticsearch.username: "elastic"  #es xpack账号
+#xpack.monitoring.elasticsearch.password: "xxxx"     #es xpack账号
 path.config: "/usr/share/logstash/pipeline"
+path.logs: "/usr/share/logstash/logs"
