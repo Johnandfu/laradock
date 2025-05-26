@@ -1,6 +1,6 @@
 FROM  alpine:latest
 LABEL maintainer="Mahmoud Zalt <mahmoud@zalt.me>"
-WORKDIR /home/www/spring-mall
+WORKDIR /home/www
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories  \ 
   && echo "https://mirrors.aliyun.com/alpine/edge/main" /etc/apk/repositories \
   && echo "https://mirrors.aliyun.com/alpine/edge/community " /etc/apk/repositories \

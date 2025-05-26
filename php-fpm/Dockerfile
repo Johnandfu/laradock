@@ -55,10 +55,10 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
   # && docker-php-ext-install gd \
   && docker-php-ext-configure gd --enable-gd --with-freetype --with-jpeg --with-webp  \
   && docker-php-ext-install -j$(nproc) gd \
-  && install-php-extensions pcntl exif mysqli pdo_mysql zip sockets  imagick  amqp redis seaslog bcmath \
+  && install-php-extensions pcntl exif mysqli pdo_mysql zip sockets  imagick  amqp redis seaslog bcmath swoole gd \
   && apk del .build-deps \
   && rm -rf /var/cache/apk/* \
   && rm -rf /tmp/pear 
-EXPOSE 9000 9998
+EXPOSE 9000 9998 9501
 CMD ["php-fpm"]
 

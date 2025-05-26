@@ -304,6 +304,7 @@ services:
       - docker-in-docker:/certs/client
     ports:
       - "${PHP_FPM_XDEBUG_PORT}:9003"
+      - "9501:9501"
     expose:
       - "9000"
     extra_hosts:
@@ -498,7 +499,7 @@ services:
       - backend
 
   ### MySQL ################################################
-  mysql:
+  mysql5:
     build:
       context: ./mysql
       args:
@@ -512,10 +513,10 @@ services:
       - MYSQL_ROOT_HOST=${MYSQL_ROOT_HOST}
       - TZ=${WORKSPACE_TIMEZONE}
     volumes:
-      - ${DATA_PATH_HOST}/mysql:/var/lib/mysql
+      - ${DATA_PATH_HOST}/mysql-new4:/var/lib/mysql
       - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
     ports:
-      - "${MYSQL_PORT}:3306"
+      - "3307:3306"
     networks:
       - backend
 
@@ -2166,11 +2167,11 @@ services:
       - backend
     tty: true
   ### MySQL ################################################
-  mysql5:
+  mysql:
     build:
-      context: ./mysql5
+      context: ./mysql
       args:
-        - MYSQL_VERSION=5.7
+        - MYSQL_VERSION=${MYSQL_VERSION}
     command: --default-authentication-plugin=mysql_native_password
     environment:
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -2180,10 +2181,10 @@ services:
       - MYSQL_ROOT_HOST=${MYSQL_ROOT_HOST}
       - TZ=${WORKSPACE_TIMEZONE}
     volumes:
-      - ${DATA_PATH_HOST}/mysql5:/var/lib/mysql
+      - ${DATA_PATH_HOST}/mysql8:/var/lib/mysql
       - ${MYSQL_ENTRYPOINT_INITDB}:/docker-entrypoint-initdb.d
     ports:
-      - "3307:3306"
+      - "3306:3306"
     networks:
       - backend
 
@@ -2416,7 +2417,7 @@ services:
     build:
       context: ./java
     volumes:
-      - ${APP_CODE_PATH_HOST}/spring-mall:/home/www/spring-mall
+      - ${APP_CODE_PATH_HOST}:/home/www/
     ports:
       - "8011:8011"
     networks:
@@ -2882,7 +2883,20 @@ services:
     ports:
       - 18848:8848
     networks:
-      - backend      
+      - backend        
+### go ################################################      
+  java-run:
+    build:
+      context: ./java
+    volumes:
+      - ${APP_CODE_PATH_HOST}/mall-swarm:/home/www/mall-swarm
+    ports:
+      - "8011:8011"
+    networks:
+      - backend
+      - frontend
+    tty: true
+
 
 
 
