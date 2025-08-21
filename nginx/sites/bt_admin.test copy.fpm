@@ -4,14 +4,13 @@ server {
     listen [::]:80;
 
     # For https
-    # listen 443 ssl;
-    # listen [::]:443 ssl ipv6only=on;
-    # ssl_certificate /etc/nginx/ssl/default.crt;
-    # ssl_certificate_key /etc/nginx/ssl/default.key;
-    # rewrite ^(.*) https://$server_name$1 permanent;
+    listen 443 ssl;
+    #listen [::]:443 ssl ipv6only=on;
+    ssl_certificate /etc/nginx/ssl/jiale_cas.org.pem;
+    ssl_certificate_key /etc/nginx/ssl/jiale_cas.org.key;
 
-    server_name jiale_pdms.org;
-    root /var/www/pdmm/public;
+    server_name bt_admin.test;
+    root /var/www/beikeshop/public;
     index index.php index.html index.htm;
 
     location / {
@@ -20,7 +19,7 @@ server {
 
     location ~ \.php$ {
         try_files $uri /index.php =404;
-        fastcgi_pass php-upstream;
+        fastcgi_pass php-alpine:9000;
         fastcgi_index index.php;
         fastcgi_buffers 16 16k;
         fastcgi_buffer_size 32k;
@@ -40,6 +39,8 @@ server {
         log_not_found off;
     }
 
-    error_log /var/log/nginx/pdm_error.log;
-    access_log /var/log/nginx/pdm_access.log;
+    error_log /var/log/nginx/beishop_error.log;
+    access_log /var/log/nginx/beishop_access.log;
 }
+
+

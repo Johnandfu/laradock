@@ -8,7 +8,7 @@ FROM php:8.3-fpm-alpine
 
 
 #FROM php:7.4-fpm-alpine3.12
-WORKDIR /var/www/tp
+WORKDIR /var/www/beikeshop
 ADD  https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 # Configure nginx - http
@@ -27,11 +27,12 @@ ADD config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
 RUN chown -R nobody:nobody /var/www/ /run  /var/log/
 
-
+USER root
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
   && chmod +x /usr/local/bin/install-php-extensions  \
   && apk add --no-cache --virtual .build-deps ca-certificates supervisor bash  sed  curl tar  git openssl openssh  libpng-dev libjpeg-turbo-dev freetype-dev  libzip-dev  unzip\
+  && apk add --no-cache  supervisor npm\
   && curl -sS https://getcomposer.org/installer | php \
   && mv composer.phar /usr/local/bin/composer \
   && composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/ \
@@ -41,7 +42,8 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
   && install-php-extensions pcntl mcrypt exif mysqli pdo_mysql zip sockets  swoole imagick   amqp redis  bcmath intl \
   && apk del .build-deps \
   && rm -rf /var/cache/apk/* \
-  && rm -rf /tmp/pear 
+  && rm -rf /tmp/pear  \
+  && npm install --save-dev chokidar
 EXPOSE 9000 9998 8000
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
