@@ -41,3 +41,5 @@ apk upgrade --update \
 #ENTRYPOINT ["composer", "config -g repo.packagist composer https://mirrors.aliyun.com/composer/"]
 EXPOSE 9000 9998 8080
 CMD ["php-fpm"]
+
+#ffmpeg -i 01m.mp4 -c copy -brand isom -metadata compatible_brands="isommp42" output.mp4

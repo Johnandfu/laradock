@@ -1630,7 +1630,7 @@ services:
     build:
       context: ./jupyterhub
       dockerfile: Dockerfile.user
-    command: [ "sh", "-c", 'echo "build only"' ]
+    command: ["sh", "-c", 'echo "build only"']
 
   ### IPython #########################################
   ipython-controller:
@@ -1846,7 +1846,7 @@ services:
       [
         "sh",
         "-c",
-        'echo ${MAILU_INIT_ADMIN_USERNAME}@${MAILU_DOMAIN} ${MAILU_INIT_ADMIN_PASSWORD} ;python manage.py advertise ; python manage.py db upgrade ; python manage.py admin ${MAILU_INIT_ADMIN_USERNAME} ${MAILU_DOMAIN} ${MAILU_INIT_ADMIN_PASSWORD} || true;sed -i -- "s/= Off/= On/g" /webmail/_data_/_default_/configs/config.ini || true;if grep -Fq "registration_link_url" /webmail/_data_/_default_/configs/config.ini;then echo Already set!;else echo "" >> /webmail/_data_/_default_/configs/config.ini; echo "[login]" >> /webmail/_data_/_default_/configs/config.ini;echo "registration_link_url = ''${MAILU_WEBSITE}${MAILU_WEB_ADMIN}/ui/user/signup''" >> /webmail/_data_/_default_/configs/config.ini;fi'
+        'echo ${MAILU_INIT_ADMIN_USERNAME}@${MAILU_DOMAIN} ${MAILU_INIT_ADMIN_PASSWORD} ;python manage.py advertise ; python manage.py db upgrade ; python manage.py admin ${MAILU_INIT_ADMIN_USERNAME} ${MAILU_DOMAIN} ${MAILU_INIT_ADMIN_PASSWORD} || true;sed -i -- "s/= Off/= On/g" /webmail/_data_/_default_/configs/config.ini || true;if grep -Fq "registration_link_url" /webmail/_data_/_default_/configs/config.ini;then echo Already set!;else echo "" >> /webmail/_data_/_default_/configs/config.ini; echo "[login]" >> /webmail/_data_/_default_/configs/config.ini;echo "registration_link_url = ''${MAILU_WEBSITE}${MAILU_WEB_ADMIN}/ui/user/signup''" >> /webmail/_data_/_default_/configs/config.ini;fi',
       ]
     networks:
       - backend
@@ -2231,7 +2231,7 @@ services:
     volumes:
       - ${APP_CODE_PATH_HOST}/:/var/www/
     ports:
-      # - "9999:9000"
+      - "8000:8000"
       - "9998:9998"
     depends_on:
       - workspace
@@ -2646,14 +2646,13 @@ services:
     depends_on:
       - zookeeper
     tty: true
-  ### zookeeper-cluster ################################################    
+  ### zookeeper-cluster ################################################
   zk1:
     build:
       context: ./zookeeper-cluster
       args:
         - ZOOKEEPER_VERSION=${ZOOKEEPER_VERSION}
     environment:
-
       - ZOOKEEPER_DATA=${ZOOKEEPER_DATA}
       - ZOO_MY_ID=1
       - ZOO_SERVERS=server.1=zk1:2888:3888\nserver.2=zk2:2888:3888\nserver.3=zk3:2888:3888
@@ -2873,7 +2872,6 @@ services:
       - frontend
     tty: true
 
-  
   ### Blackfire ########################################
   nacos-registry:
     image: nacos/nacos-server
@@ -2883,8 +2881,8 @@ services:
     ports:
       - 18848:8848
     networks:
-      - backend        
-### go ################################################      
+      - backend
+  ### go ################################################
   java-run:
     build:
       context: ./java
@@ -2896,10 +2894,3 @@ services:
       - backend
       - frontend
     tty: true
-
-
-
-
-
-
-      

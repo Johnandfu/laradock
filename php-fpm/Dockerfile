@@ -45,6 +45,7 @@ WORKDIR /var/www/tp
 ADD  https://ghproxy.com/https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 
 ENV TZ=Asia/Shanghai
+COPY upload.ini /usr/local/etc/php/conf.d/upload.ini
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \ 
   chmod +x /usr/local/bin/install-php-extensions && \
   apk add --no-cache --virtual .build-deps\
